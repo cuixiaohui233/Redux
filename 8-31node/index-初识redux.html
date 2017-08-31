@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>初识redux</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      /*
+      1.redux是一个状态管理的库，他提供一个可预测的状态管理
+      2.应用中只有一个唯一的store，唯一的 reducer，唯一的state
+      3.具体步骤：
+        (1).引入redux，import {createStore} from 'redux';
+        (2).声明一个函数counter，接受两个变量，一个是state，一个是action,这个函数就是reduxer
+        (3).利用引进来的createStore,来创建一个store，把counter传进去，就可以得到一个store,
+        (4).在一个事件里，用store.dispatch来发送一个action,
+          注意只要发送了action就会进 reducer,
+          reducer 就是一个纯函数，接收旧的 state 和 action，返回新的 state。
+          什么是纯函数，一个确定的输入得到一个确定的输出，就是不会有副作用的函数，干净纯粹，
+          给他一个state,就会返回一个新的state,
+          可以知道下一步要干什么，是可预测的
+        (5).这个reducer中返回的应该是一个新的state,如果说这个状态是一个对象形式的,就需要
+          用Object.assign({},state,{修改值}) ,这样保证每次返回的是新的state，又要保证
+          数据结构的一致，这样就可以实现一个回退的功能
+      4.状态监听器：
+        store.subscribe(()={
+          //当状态发生改变的时候回进来这里
+        })
+      5.action创建函数
+        store.dispatch({type:"ADD"})这个里面的type可以写成：
+        function add(){
+          return {type:"ADD"}
+        }
+        store.dispatch(add());
+      6.store.dispatch来发送一个action
+        在想要做一些状态变化的时候，就需要用store.dispatch来发送一个action，这个action是规定了是
+        一个对象形式的,第一个字段必须是type:xxx,这个xxx是自己决定的
+        如果想要在一些判断成功的时候才发起action，这个时候就要用到中间件，需要先npm i redux-thunk
+        然后在引入那个applyMiddleware,然后在创建store的时候，即加入applyMiddleware(thunk)
+        这个中间件可以让store.dispatch的返回这变成一个函数，这个中间件如果碰到这个函数就会执行这个
+        函数，这个时候就可以做一些判断了
+      7.reducer和reduce:
+      // 以下代码示例来自 MDN JavaScript 文档
+
+/* 这里的callback是和reducer非常相似的函数
+ * arr.reduce(callback, [initialValue])
+ */
+
+var sum = [0, 1, 2, 3].reduce(function(acc, val) {
+  return acc + val;
+}, 0);
+// sum = 6
+console.log(sum)
+
+/* 注意这当中的回调函数 (prev, curr) => prev + curr
+ * 与我们redux当中的reducer模型 (previousState, action) => newState 看起来是不是非常相似呢
+ */
+[0, 1, 2, 3, 4].reduce( (prev, curr) => prev + curr );
+
+
+
+      /*
+      其他的东西：
+        在react中的componentDidMount这个生命周期钩子中，如果有多个setState的出现，那么在状态更新的
+        时候react会将修改的解析出来，这个操作是异步的，所以，第一次在this.setState的时候，就会把其中
+        没有修改的东西变成undefined，这个时候就要用到setTimeout来处理，加了setTimeout就会变成同步
+      */
+    </script>
+  </body>
+</html>
